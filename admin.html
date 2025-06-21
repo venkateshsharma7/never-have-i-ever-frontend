@@ -32,12 +32,11 @@
 <body class="min-h-screen p-6">
   <div class="max-w-4xl mx-auto">
     <h1 class="text-4xl font-comic text-center text-white mb-10">🔥 Admin Dashboard - Never Have I Ever 🔥</h1>
-    
     <div id="confessions" class="space-y-6"></div>
   </div>
 
   <script>
-    fetch(' https://never-have-i-ever-ayrr.onrender.com')
+    fetch('https://never-have-i-ever-ayrr.onrender.com/confessions')
       .then(res => res.json())
       .then(data => {
         const container = document.getElementById('confessions');
