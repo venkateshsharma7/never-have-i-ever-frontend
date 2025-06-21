@@ -151,7 +151,7 @@
       confetti({ particleCount: 200, spread: 100, colors: ['#feca57', '#ff6b6b', '#4ecdc4', '#45b7d1'] });
       gsap.from("#result", { scale: 0.8, opacity: 0, duration: 0.7, ease: "elastic.out(1, 0.3)" });
 
-      fetch('https://never-have-i-ever-ayrr.onrender.com', {
+      fetch('https://never-have-i-ever-ayrr.onrender.com/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
