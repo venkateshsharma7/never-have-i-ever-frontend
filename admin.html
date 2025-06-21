@@ -32,26 +32,34 @@
 <body class="min-h-screen p-6">
   <div class="max-w-4xl mx-auto">
     <h1 class="text-4xl font-comic text-center text-white mb-10">🔥 Admin Dashboard - Never Have I Ever 🔥</h1>
-    <div id="confessions" class="space-y-6"></div>
+    <div id="confessions" class="space-y-6 text-sm"></div>
   </div>
 
   <script>
     fetch('https://never-have-i-ever-ayrr.onrender.com/confessions')
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) throw new Error("Failed to fetch");
+        return res.json();
+      })
       .then(data => {
         const container = document.getElementById('confessions');
+
+        if (!Array.isArray(data) || data.length === 0) {
+          container.innerHTML = '<p class="text-white">No entries found.</p>';
+          return;
+        }
 
         data.forEach((entry, index) => {
           const div = document.createElement('div');
           div.className = "card p-6";
 
-          const answerList = entry.answers.map((ans, i) => 
+          const answerList = (entry.answers || []).map((ans, i) => 
             `<li class="mb-1"><span class="font-semibold">${i + 1}. ${ans.question}</span><br/><span class="text-gray-600">Answer: ${ans.answer}</span></li>`
           ).join("");
 
           div.innerHTML = `
             <div class="mb-4">
-              <h2 class="text-xl font-bold text-pink-600">${entry.nickname} <span class="text-sm text-gray-500">(${entry.age} yrs)</span></h2>
+              <h2 class="text-xl font-bold text-pink-600">${entry.nickname || 'Anonymous'} <span class="text-sm text-gray-500">(${entry.age || '?'} yrs)</span></h2>
               <p class="text-gray-700">Score: <span class="font-semibold">${entry.score}/${entry.total}</span> (${entry.percent}%)</p>
               <p class="text-sm text-gray-500">Time: ${entry.timestamp}</p>
             </div>
@@ -65,8 +73,8 @@
         });
       })
       .catch(err => {
-        document.getElementById('confessions').innerHTML = '<p class="text-white">Error loading confessions.</p>';
-        console.error(err);
+        document.getElementById('confessions').innerHTML = '<p class="text-white">❌ Error loading confessions. Check browser console.</p>';
+        console.error("🔥 Admin fetch error:", err);
       });
   </script>
 </body>
